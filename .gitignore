@@ -1,4 +1,30 @@
+# Dependencias y artefactos generados
 node_modules/
 dist/
 build/
+target/
+*.class
 *.log
+logs/
+
+# Entornos virtuales / cachés
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+.cache/
+coverage/
+.nyc_output/
+
+# Variables de entorno con secretos (nunca versionar)
+.env
+.env.local
+.env.*.local
+
+# IDE y SO
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

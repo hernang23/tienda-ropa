@@ -47,5 +47,6 @@ public class RegistroAuditoria {
     public String getEntidad() { return entidad; }
     public String getEntidadId() { return entidadId; }
     public String getDetalle() { return detalle; }
+    public String getIp() { return ip; }
     public OffsetDateTime getFecha() { return fecha; }
 }

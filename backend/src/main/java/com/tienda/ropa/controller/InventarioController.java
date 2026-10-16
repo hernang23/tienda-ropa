@@ -43,7 +43,7 @@ public class InventarioController {
     public InventarioDtos.MovimientoDto ajustar(@PathVariable Long varianteId,
             @Valid @RequestBody InventarioDtos.AjusteRequest req,
             @AuthenticationPrincipal UsuarioTokenAuthentication principal, HttpServletRequest http) {
-        return inventario.ajustar(varianteId, req, principal.getUsuarioId(), AuthController.ip(http));
+        return inventario.ajustar(varianteId, req, principal.getUsuarioId());
     }
 
     @GetMapping("/stock-bajo")

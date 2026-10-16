@@ -1,5 +1,7 @@
 package com.tienda.ropa.security;
 
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tienda.ropa.repository.TokenRevocadoRepository;
 import io.jsonwebtoken.Claims;
@@ -50,10 +52,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Long uid = ((Number) claims.get("uid")).longValue();
             UsuarioTokenAuthentication auth = new UsuarioTokenAuthentication(claims.getSubject(), uid, roles);
             request.setAttribute("AUTH_HEADER_SET", Boolean.TRUE);
-            getSecurityContextHolderStrategy().setContext(auth);
+            SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+            ctx.setAuthentication(auth);
+            SecurityContextHolder.setContext(ctx);
             chain.doFilter(request, response);
         } catch (JwtException | IllegalArgumentException ex) {
-            getSecurityContextHolderStrategy().clearContext();
+            SecurityContextHolder.clearContext();
             rechazar(response, "El token es invalido o expiro. Inicie sesion nuevamente.");
         }
     }

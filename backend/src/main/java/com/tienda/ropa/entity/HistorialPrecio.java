@@ -38,4 +38,5 @@ public class HistorialPrecio {
     public BigDecimal getPrecioAnterior() { return precioAnterior; }
     public BigDecimal getPrecioNuevo() { return precioNuevo; }
     public OffsetDateTime getCreadoEn() { return creadoEn; }
+    public Long getUsuarioId() { return usuarioId; }
 }

@@ -82,4 +82,13 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
 
     @Query("SELECT v FROM Venta v WHERE v.cliente.id = :clienteId ORDER BY v.fecha DESC")
     Page<Venta> porCliente(@org.springframework.data.repository.query.Param("clienteId") Long clienteId, Pageable pageable);
+
+    @Query("""
+        SELECT COALESCE(SUM(d.cantidad * d.precioUnitario - d.descuento + d.impuestos), 0)
+        FROM DetalleVenta d JOIN d.venta v
+        WHERE v.estado = 'COMPLETADA' AND d.variante.id = :varianteId AND v.fecha BETWEEN :desde AND :hasta
+        """)
+    BigDecimal topIngresosVariante(@Param("varianteId") Long varianteId,
+                                   @Param("desde") OffsetDateTime desde,
+                                   @Param("hasta") OffsetDateTime hasta);
 }

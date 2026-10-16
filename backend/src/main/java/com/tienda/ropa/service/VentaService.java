@@ -11,6 +11,7 @@ import com.tienda.ropa.mapper.Mappers;
 import com.tienda.ropa.repository.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,9 +77,14 @@ public class VentaService {
     public Page<VentaDtos.VentaDto> listar(String q, LocalDate desde, LocalDate hasta, String estado, Pageable pageable) {
         OffsetDateTime d0 = desde == null ? null : desde.atStartOfDay().atOffset(OffsetDateTime.now().getOffset());
         OffsetDateTime h0 = hasta == null ? null : hasta.plusDays(1).atStartOfDay().atOffset(OffsetDateTime.now().getOffset());
-        return ventas.buscar(q == null || q.isBlank() ? null : q.trim(), d0, h0, pageable)
+        List<VentaDtos.VentaDto> lista = ventas.buscar(q == null || q.isBlank() ? null : q.trim(), d0, h0, Pageable.unpaged())
+                .stream()
                 .filter(v -> estado == null || estado.isBlank() || v.getEstado().name().equalsIgnoreCase(estado))
-                .map(this::aDto);
+                .map(this::aDto)
+                .toList();
+        int from = (int) Math.min(pageable.getOffset(), lista.size());
+        int to = Math.min(from + pageable.getPageSize(), lista.size());
+        return new PageImpl<>(lista.subList(from, to), pageable, lista.size());
     }
 
     @Transactional(readOnly = true)

@@ -12,6 +12,7 @@ public interface CajaRepository extends JpaRepository<Caja, Long> {
     List<Caja> findByEstado(com.tienda.ropa.enums.EstadoCaja estado);
     Page<Caja> findAllByOrderByIdDesc(Pageable pageable);
 
-    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 5)::int), 0) FROM caja", nativeQuery = true)
+    /** Secuencia del dia: el prefijo CAJA-aaammdd ocupa las primeras 11 posiciones. */
+    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 13)::int), 0) FROM caja WHERE numero LIKE 'CAJA-%'", nativeQuery = true)
     int ultimoNumeroSecuencial();
 }

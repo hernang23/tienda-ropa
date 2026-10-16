@@ -33,19 +33,23 @@ public class NumeroService {
 
     private String prefijoFechas() { return LocalDate.now().format(FMT); }
 
-    public synchronized String nuevoNumeroVenta() {
+    /**
+     * Genera el numero con la secuencia actual leida en la misma transaccion del llamador,
+     * de modo que al confirmar la operacion ya sea visible para otras transacciones.
+     */
+    public String nuevoNumeroVenta() {
         return "VENT-" + prefijoFechas() + "-" + String.format("%04d", ventas.ultimoNumeroSecuencial() + 1);
     }
 
-    public synchronized String nuevoNumeroCompra() {
+    public String nuevoNumeroCompra() {
         return "CMP-" + prefijoFechas() + "-" + String.format("%04d", compras.ultimoNumeroSecuencial() + 1);
     }
 
-    public synchronized String nuevoNumeroDevolucion() {
+    public String nuevoNumeroDevolucion() {
         return "DEV-" + prefijoFechas() + "-" + String.format("%04d", devoluciones.ultimoNumeroSecuencial() + 1);
     }
 
-    public synchronized String nuevoNumeroCaja() {
+    public String nuevoNumeroCaja() {
         return "CAJA-" + prefijoFechas() + "-" + String.format("%04d", cajas.ultimoNumeroSecuencial() + 1);
     }
 }

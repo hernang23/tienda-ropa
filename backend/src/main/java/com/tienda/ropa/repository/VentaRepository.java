@@ -28,7 +28,8 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
                        @Param("hasta") OffsetDateTime hasta,
                        Pageable pageable);
 
-    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 4)::int), 0) FROM venta", nativeQuery = true)
+    /** Secuencia del dia: el prefijo VENT-aaammdd ocupa las primeras 10 posiciones. */
+    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 12)::int), 0) FROM venta WHERE numero LIKE 'VENT-%'", nativeQuery = true)
     int ultimoNumeroSecuencial();
 
     @Query("SELECT COALESCE(SUM(v.total), 0) FROM Venta v WHERE v.estado = 'COMPLETADA' AND v.fecha BETWEEN :desde AND :hasta")
@@ -78,4 +79,7 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
 
     @Query("SELECT v FROM Venta v WHERE v.id = :id AND v.estado IN ('COMPLETADA','PENDIENTE_PAGO')")
     Optional<Venta> findEditablesById(Long id);
+
+    @Query("SELECT v FROM Venta v WHERE v.cliente.id = :clienteId ORDER BY v.fecha DESC")
+    Page<Venta> porCliente(@org.springframework.data.repository.query.Param("clienteId") Long clienteId, Pageable pageable);
 }

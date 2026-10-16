@@ -13,6 +13,7 @@ public interface DevolucionRepository extends JpaRepository<Devolucion, Long> {
     @Query("SELECT d FROM Devolucion d JOIN FETCH d.venta ORDER BY d.fecha DESC")
     Page<Devolucion> listar(Pageable pageable);
 
-    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 6)::int), 0) FROM devolucion", nativeQuery = true)
+    /** Secuencia del dia: el prefijo DEV-aaammdd ocupa las primeras 10 posiciones. */
+    @Query(value = "SELECT COALESCE(MAX(SUBSTRING(numero FROM 12)::int), 0) FROM devolucion WHERE numero LIKE 'DEV-%'", nativeQuery = true)
     int ultimoNumeroSecuencial();
 }

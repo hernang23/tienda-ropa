@@ -75,6 +75,7 @@ public class Venta {
     public Long getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
     public OffsetDateTime getFecha() { return fecha; }
+    public void setFecha(OffsetDateTime fecha) { this.fecha = fecha; }
     public BigDecimal getSubtotal() { return subtotal; }
     public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
     public BigDecimal getDescuento() { return descuento; }

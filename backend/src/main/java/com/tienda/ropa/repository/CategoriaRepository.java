@@ -1,0 +1,10 @@
+package com.tienda.ropa.repository;
+
+import com.tienda.ropa.entity.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+    boolean existsByNombreIgnoreCase(String nombre);
+    List<Categoria> findByActivoTrueOrderByNameAsc();
+}

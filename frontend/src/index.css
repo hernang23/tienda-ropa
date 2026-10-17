@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Impresión del comprobante de venta */
+@media print {
+  body * { visibility: hidden; }
+  #comprobante, #comprobante * { visibility: visible; }
+  #comprobante { position: absolute; left: 0; top: 0; width: 100%; }
+}
